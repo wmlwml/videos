@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="Web前端视频教程,大数据视频教程,HTML5视频教程,UI视频教程,PHP视频教程,java视频教程,python基础教程">
+    <meta name="description" content="Y先生教育在线课程视频,为您提供java,python,HTML5,UI,PHP,大数据等学科经典视频教程在线浏览学习,精细化知识点解析,深入浅出,想学不会都难,Y先生教育,学习成就梦想！">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script src="../js/gVerify.js"></script>
+<!--    <link rel="icon" href="../favicon.png" type="image/png">-->
+    <title>在线公开课-Y先生教育|java|大数据|HTML5|python|UI|PHP视频教程</title>
+</head>
+
+<body>
+<header>
+    <div class="container top_bar clearfix">
+        <img src="../img/logo.png" alt="小禅院">
+        <div id="tele">
+            <span>0375-208-9092</span>
+            <span>0375-208-9051</span>
+        </div>
+    </div>
+    <menu>
+        <div class="container clearfix">
+            <ul class="clearfix f_left">
+                <li><a href="index.jsp">首页</a></li>
+                <li><a href="../course.html">课程</a></li>
+                <li><a href="#">关于我们</a></li>
+                <li class="menu_active"><a href="my_profile.html">个人中心</a></li>
+            </ul>
+            <div id="search_group">
+                <input type="text" placeholder="搜索课程">
+                <span id="search"></span>
+            </div>
+            <div id="user_bar">
+                <a href="/videos/user/showMyProfile.do">
+                    <c:if test="${empty user.imgUrl}">
+                        <img id="avatyar" src="../img/avatar_lg.png" alt="">
+                    </c:if>
+
+                    <c:if test="${not empty user.imgUrl}">
+                        <img id="avatyyar" src="" alt="">
+                    </c:if>
+
+                </a>
+<!--                <a href="/videos/user/loginOutUser.do" id="lay_out">退出</a>-->
+<!--                -->
+                <a href="javascript:;" id="lay_out" onclick="exit()">退出</a>
+            </div>
+        </div>
+    </menu>
+</header>
+<main>
+    <div class="container">
+        <h2>我的资料</h2>
+        <div id="profile_tab">
+            <ul class="profile_tab_header f_left clearfix">
+                <li><a href="">更改资料</a></li>
+                <li class="profile_tab_line">|</li>
+                <li><a href="">更改头像</a></li>
+                <li class="profile_tab_line">|</li>
+                <li><a href="">密码安全</a></li>
+            </ul>
+            <div class="proflle_tab_body">
+
+                <div class="proflle_tab_workplace clearfix">
+                    <div class="profile_avatar_area">
+
+                            <img id="avatoar" src="../img/avatar_lg.png" alt="">
+                            <img id="avatar" width="180px" heigth="180px" src="" alt="">
+                        <p>
+                                <span id="snickName"></span>
+<!--                                <span>无名氏</span>-->
+                            欢迎回来！</p>
+                    </div>
+                    <ul class="profile_ifo_area" id="tid">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="container">
+        <ul>
+            <li><img src="../img/footer_logo.png" alt="" id="foot_logo"></li>
+            <li>版权所有：Y先生教育&#x3000;&#x3000;&#x3000;&copy;&nbsp;www.chengjian100.com</li>
+            <li><img src="../img/微信公众号.png" alt="" id="wxgzh"></li>
+        </ul>
+    </div>
+</footer>
+</body>
+
+<script>
+    // $(function () {
+    //     searchInfo()
+    // });
+    //进行ajax 的编写
+    //查询用户信息
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "../ordinary/onLineUserInfo.do",
+            // data:{beginTime:$("#beginTime").val(),endTime:$("#endTime").val()},
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                     var info = data.info;
+                    //每次查询进行清空
+                    console.log(data.info);
+                    $("#snickName").html(data.info.nickName)
+                    $("#tid").empty();
+                    $(info).each(function () {
+                        // var html = '<tr>\n' +
+                        //     '        <td>'+this.createTime+'</td>\n' +
+                        //     '        <td>'+this.income+'</td>\n' +
+                        //     '        <td>'+this.pay+'</td>\n' +
+                        //     '        <td>'+this.consumType+'</td>\n' +
+                        //     '        <td>'+this.balance+'</td>\n' +
+                        //     '        <td>'+this.sketch+'</td>\n' +
+                        //     '    </tr>';
+                        // $("#tid").append($(html))
+                        var html =
+                            '<li>'+'<span>昵 &#x3000; 称：</span>'+this.nickName+'</li>\n' +
+                            '<li>'+'<span>性&#x3000;别：</span>'+this.sex+'</li>\n' +
+                            '<li>'+'<span>生&#x3000;日：</span>'+this.birthday+'</li>\n' +
+                            '<li>'+'<span>邮&#x3000;箱：</span>'+this.email+'</li>\n' +
+                            '<li>'+'<span>所在地：：</span>'+this.address+'</li>\n';
+
+                            // '        <li>'+this.income+'</li>\n' +
+                            // '        <li>'+this.pay+'</li>\n' +
+                            // '        <li>'+this.consumType+'</li>\n' +
+                            // '        <li>'+this.email+'</li>\n' +
+                            // '        <li>'+this.sketch+'</li>\n';
+                        $("#tid").append($(html))
+
+                    })
+                }
+            }
+        })
+    });
+
+
+
+    //退出操作
+    function exit() {
+        $.ajax({
+            type: "post",
+            url: "../ordinary/exit.do",
+            data:$("form").serialize(),
+            dataType:"json",
+            //回调函数
+            success:function (data) {
+                if (data.code == 1) {
+                    window.location.href = "index.html"
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        })
+    }
+
+
+</script>
+
+</html>

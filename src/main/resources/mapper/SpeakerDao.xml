@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.qf.dao.SpeakerDao">
+
+    <resultMap id="speaker" type="speaker">
+        <id property="id" column="id"/>
+        <result property="speakerName" column="speaker_name"/>
+        <result property="speakerDesc" column="speaker_desc"/>
+        <result property="speakerJob" column="speaker_job"/>
+        <result property="headImgUrl" column="head_img_url"/>
+    </resultMap>
+
+    <sql id="selAll">
+        SELECT
+            id,
+            speaker_name,
+            speaker_desc,
+            speaker_job,
+            head_img_url
+        FROM
+            speaker
+    </sql>
+
+<!--查询所有-->
+    <select id="findAll" resultMap="speaker">
+        <include refid="selAll"/>
+    </select>
+<!--    根据id查询-->
+    <select id="findById" resultMap="speaker" parameterType="integer">
+        <include refid="selAll"/>
+        <where>
+            id=#{id}
+        </where>
+    </select>
+<!---->
+    <update id="updateById" parameterType="speaker">
+        update speaker
+        <set>
+            <if test="speakerName != null">
+                speaker_name=#{speakerName},
+            </if>
+            <if test="speakerDesc != null">
+                speaker_desc=#{speakerDesc},
+            </if>
+            <if test="speakerJob != null">
+                speaker_job=#{speakerJob},
+            </if>
+            <if test="headImgUrl != null">
+                head_img_url=#{headImgUrl}
+            </if>
+        </set>
+           where id=#{id}
+
+    </update>
+
+    
+<!--    添加数据-->
+    <insert id="add" parameterType="speaker">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+
+        insert into speaker
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="speakerName != null">
+                speaker_name,
+            </if>
+            <if test="speakerDesc != null">
+                speaker_desc,
+            </if>
+            <if test="speakerJob != null">
+                speaker_job,
+            </if>
+            <if test="headImgUrl != null">
+                head_img_url
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="speakerName != null">
+                #{speakerName},
+            </if>
+            <if test="speakerDesc != null">
+                #{speakerDesc},
+            </if>
+            <if test="speakerJob != null">
+                #{speakerJob},
+            </if>
+            <if test="headImgUrl != null">
+                #{headImgUrl}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="integer">
+        delete from speaker where id=#{id}
+    </delete>
+
+</mapper>

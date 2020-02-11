@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.qf.dao.CourseDao">
+    <resultMap id="course" type="course">
+        <id property="id" column="id"/>
+        <result property="courseTitle" column="course_title"/>
+        <result property="courseDesc" column="course_desc"/>
+        <result property="subjectId" column="subject_id"/>
+    </resultMap>
+
+    <sql id="selAll">
+        select * from course
+    </sql>
+
+<!--查询全部-->
+    <select id="findAll" resultMap="course">
+        <include refid="selAll"></include>
+    </select>
+<!--添加数据-->
+    <insert id="add" parameterType="course">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseTitle != null">
+                course_title,
+            </if>
+            <if test="courseDesc != null">
+                course_desc,
+            </if>
+            <if test="subjectId != null">
+                subject_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseTitle != null">
+                #{courseTitle},
+            </if>
+            <if test="courseDesc != null">
+                #{courseDesc},
+            </if>
+            <if test="subjectId != null">
+                #{subjectId}
+            </if>
+        </trim>
+    </insert>
+
+<!--删除数据-->
+    <delete id="deleteById" parameterType="integer">
+        delete from course where id=#{id}
+    </delete>
+
+    <!--    根据id查询-->
+    <select id="findById" resultMap="course" parameterType="integer">
+        <include refid="selAll"/>
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+    <!--更新数据-->
+    <update id="updateById" parameterType="course">
+        update course
+        <set>
+            <if test="courseTitle != null">
+                course_title=#{courseTitle},
+            </if>
+            <if test="courseDesc != null">
+                course_desc=#{courseDesc},
+            </if>
+            <if test="subjectId != null">
+                subject_id=#{subjectId}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+</mapper>

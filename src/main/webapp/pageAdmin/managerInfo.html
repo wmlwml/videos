@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="../layui/css/layui.css" />
+        <script type="text/javascript" src="../layui/layui.js" ></script>
+        <script type="text/javascript" src="../js/jquery-1.12.2.min.js" ></script>
+    </head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header" style="background-color:black;">
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="" style="color: #00FFFF;">云课在线后台管理系统</a></li>
+            <li class="layui-nav-item"><a href="listVideo.html" target="myframe">视频管理</a></li>
+            <li class="layui-nav-item"><a href="listSpeaker.html" target="myframe">主讲人管理</a></li>
+            <li class="layui-nav-item"><a href="listCourse.html" target="myframe">课程管理</a></li>
+            <li class="layui-nav-item"><a href="listAdmin.html" target="myframe">授权管理</a></li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+
+                <a href="javascript:;">
+                   <p></p>
+                </a>
+
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javascript:void(0)" onclick="exit()">退出系统</a></li>
+        </ul>
+    </div>
+    <div class="layui-body" style="left: 0px">
+        <iframe name="myframe" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+
+</div>
+</body>
+
+<script>
+    function exit() {
+        $.ajax({
+            type: "post",
+            url: "../login/exit.do",
+            data:$("form").serialize(),
+            dataType:"json",
+            //回调函数
+            success:function (data) {
+                if (data.code == 1) {
+                    window.location.href = "managerInfo.html"
+                } else {
+                    window.location.href = "login.html";
+                }
+            }
+        })
+    }
+    //当前登录用户
+    $.ajax({
+        type:"get",
+        url:"../login/activeUser.do",
+        dataType:"json",
+        success: function (data) {
+            if (data.code == 1) {
+                $("p").html("欢迎您：" + data.info);
+            }
+        }
+    })
+
+</script>
+</html>
